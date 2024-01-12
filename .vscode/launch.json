@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "Attach to Chrome",
+      "port": 3000,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}"
+    },
+
+    {
+      "name": "Attach",
+      "type": "node",
+      "request": "attach",
+      "port": 8080,
+      "address": "localhost",
+      "restart": false,
+      "sourceMaps": false,
+      "localRoot": "${workspaceRoot}",
+      "remoteRoot": null
+    }
+  ]
+}
