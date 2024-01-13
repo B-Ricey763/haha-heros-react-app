@@ -5,53 +5,29 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import Stack from "@mui/material/Stack";
-import { Volunteer, Response, deleteVolunteer, getVolunteers } from "./api";
-import { useSnackbar } from "notistack";
-import UpdateDialog from "./UpdateDialog";
-import { Avatar, Tab } from "@mui/material";
+import { useState } from "react";
+import { Volunteer, getVolunteers } from "./api";
+import VolunteerDialog from "./VolunteerDialog";
+import VolunteerRow from "./VolunteerRow";
 
-export default function VolunteerTable() {
-  const [currentVolunteer, setCurrentVolunteer] = useState<Volunteer>(
-    {} as Volunteer
-  );
-  const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
-  const [rows, setRows] = useState<Volunteer[]>([]);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+interface VolunteerTableProps {
+  isDialogOpen: boolean;
+  openUpdateDialog: () => void;
+  volunteers: Volunteer[];
+  setVolunteers: (volunteers: Volunteer[]) => void;
+  setCurrentVolunteer: (volunteer: Volunteer) => void;
+}
 
-  const getRows = async () => {
-    const volunteers = await getVolunteers();
-    setRows(volunteers);
-  };
-
-  useEffect(() => {
-    getRows();
-  }, []);
-
-  const handleDelete = async (id: string) => {
-    const response = await deleteVolunteer(id);
-    enqueueSnackbar(response.message, {
-      variant: response.success ? "success" : "error",
-    });
-    getRows();
-  };
-
-  const handleOpenUpdateDialog = (vol: Volunteer) => {
-    setCurrentVolunteer(vol);
-    setUpdateDialogOpen(true);
-  };
-
-  const handleCloseUpdateDialog = () => {
-    setUpdateDialogOpen(false);
-  };
-
+export default function VolunteerTable({
+  isDialogOpen,
+  openUpdateDialog,
+  volunteers,
+  setVolunteers,
+  setCurrentVolunteer,
+}: VolunteerTableProps) {
   return (
     <>
-      {rows.length > 0 && (
+      {volunteers.length > 0 && (
         <>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -67,52 +43,18 @@ export default function VolunteerTable() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Avatar src={row.avatar} alt={`${row.name}'s Profile`} />
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="left">{row.phone}</TableCell>
-                    <TableCell align="left">{row.email}</TableCell>
-                    <TableCell align="left">{row.rating}</TableCell>
-                    <TableCell align="left">
-                      {row.status ? "Active" : "Inactive"}
-                    </TableCell>
-                    <TableCell align="left">{row.hero_project}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        aria-label="delete"
-                        color="error"
-                        onClick={() => handleDelete(row.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        aria-label="edit"
-                        color="primary"
-                        onClick={() => handleOpenUpdateDialog(row)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
+                {volunteers.map((v) => (
+                  <VolunteerRow
+                    volunteer={v}
+                    openUpdateDialog={openUpdateDialog}
+                    setCurrentVolunteer={setCurrentVolunteer}
+                    volunteers={volunteers}
+                    setVolunteers={setVolunteers}
+                  />
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <UpdateDialog
-            open={isUpdateDialogOpen}
-            initialVolunteer={currentVolunteer}
-            onClose={handleCloseUpdateDialog}
-          />
         </>
       )}
     </>

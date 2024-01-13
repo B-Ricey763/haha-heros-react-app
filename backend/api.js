@@ -42,6 +42,20 @@ app.put('/api/bog/users/update/:id', (req, res) => {
   }
 })
 
+app.post('/api/bog/users/create/', (req, res) => {
+  const volunteer = req.body
+  const nextId = database[database.length - 1].id + 1
+  // Since id's aren't controlled by the database, it's
+  // just a js array, we are just kind of guessing the
+  // next index. There may be holes, but I think this
+  // solution is better than updating every id when you delete.
+  database.push({
+    ...volunteer,
+    id: nextId
+  })
+  res.sendStatus(200)
+})
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)

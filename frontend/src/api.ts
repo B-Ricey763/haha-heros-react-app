@@ -60,11 +60,17 @@ export async function updateVolunteer(
       `/api/bog/users/update/${updatedVolunteer.id}`,
       updatedVolunteer
     );
-    return { success: true, message: "Item was created!" };
+    return { success: true, message: "Volunteer Updated!" };
   } catch (error: any) {
-    return {
-      success: false,
-      message: error.message,
-    };
+    return { success: false, message: error.message };
+  }
+}
+
+export async function createVolunteer(volunteer: Volunteer): Promise<Response> {
+  try {
+    const response = await instance.post("/api/bog/users/create", volunteer);
+    return { success: true, message: "Volunteer Added!" };
+  } catch (error: any) {
+    return { success: false, message: error.message };
   }
 }

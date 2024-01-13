@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import { Volunteer, updateVolunteer } from "./api";
+import { Volunteer, updateVolunteer, createVolunteer } from "./api";
 import {
   Button,
   Container,
@@ -13,21 +13,27 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent } from "react";
 import { useSnackbar } from "notistack";
 
 interface EditProps {
   open: boolean;
   initialVolunteer: Volunteer;
   onClose: () => void;
+  isUpdate: boolean;
+  volunteers: Volunteer[];
+  setVolunteers: (volunteers: Volunteer[]) => void;
 }
 
-export default function UpdateDialog({
+export default function VolunteerDialog({
   open,
   initialVolunteer,
   onClose,
+  isUpdate,
+  volunteers,
+  setVolunteers,
 }: EditProps) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   // Ok, I know I should've used a useState hook here, but I tried really hard and couldn't get it to work, so I gave up, but this works
   let volunteer = initialVolunteer;
 
@@ -37,26 +43,36 @@ export default function UpdateDialog({
 
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const response = await updateVolunteer(volunteer);
+    const apiCall = isUpdate ? updateVolunteer : createVolunteer;
+    const response = await apiCall(volunteer);
+    if (response.success) {
+      if (isUpdate) {
+        const newVolunteers = volunteers.map((v, i, vs) =>
+          v.id === volunteer.id ? volunteer : v
+        );
+        setVolunteers(newVolunteers);
+      }
+    }
+
+    onClose();
     enqueueSnackbar(response.message, {
       variant: response.success ? "success" : "error",
     });
-    onClose();
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // Coercing this type was pain. So I gave up.
-    // @ts-ignore
-    volunteer[e.target.id] = e.target.value;
+    const key = e.target.id as keyof Omit<Volunteer, "status">;
+    volunteer[key] = e.target.value;
   };
 
-  const handleChange = (key: string, newValue: any) => {
-    // @ts-ignore
+  const handleChange = <K extends keyof Volunteer>(key: K, newValue: any) => {
     volunteer[key] = newValue;
   };
   return (
     <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth="sm">
-      <DialogTitle>{`Update ${volunteer.name}'s Profile`}</DialogTitle>
+      <DialogTitle>
+        {isUpdate ? `Update ${volunteer.name}'s Profile` : "Create Volunteer"}
+      </DialogTitle>
       <Divider></Divider>
       <DialogContent>
         <form onSubmit={handleSubmit}>
@@ -114,7 +130,7 @@ export default function UpdateDialog({
               onInput={handleInputChange}
             />
             <Button type="submit" color="success">
-              Update
+              {isUpdate ? "Update" : "Create"}
             </Button>
           </Stack>
         </form>
