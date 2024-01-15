@@ -1,5 +1,7 @@
 import axios, { AxiosError } from "axios";
 
+// Create a .env file within /frontend locally to set
+// REACT_APP_URL (locally, it will be 'http://localhost')
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
@@ -42,7 +44,7 @@ export async function getVolunteers(): Promise<Volunteer[]> {
 
 export async function deleteVolunteer(name: string): Promise<Response> {
   try {
-    const _ = await instance.delete(`/api/bog/users/delete/${name}`);
+    await instance.delete(`/api/bog/users/delete/${name}`);
     return { success: true, message: "Item successfully deleted!" };
   } catch (error: any) {
     return {
@@ -56,7 +58,7 @@ export async function updateVolunteer(
   updatedVolunteer: Volunteer
 ): Promise<Response> {
   try {
-    const response = await instance.put(
+    await instance.put(
       `/api/bog/users/update/${updatedVolunteer.id}`,
       updatedVolunteer
     );
@@ -68,7 +70,7 @@ export async function updateVolunteer(
 
 export async function createVolunteer(volunteer: Volunteer): Promise<Response> {
   try {
-    const response = await instance.post("/api/bog/users/create", volunteer);
+    await instance.post("/api/bog/users/create", volunteer);
     return { success: true, message: "Volunteer Added!" };
   } catch (error: any) {
     return { success: false, message: error.message };

@@ -1,5 +1,3 @@
-import Dialog from "@mui/material/Dialog";
-import { Volunteer, updateVolunteer, createVolunteer } from "./api";
 import {
   Button,
   Container,
@@ -13,8 +11,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ChangeEvent, SyntheticEvent } from "react";
+import Dialog from "@mui/material/Dialog";
 import { useSnackbar } from "notistack";
+import { ChangeEvent, SyntheticEvent } from "react";
+import { Volunteer, createVolunteer, updateVolunteer } from "../api";
 
 interface EditProps {
   open: boolean;
@@ -75,7 +75,7 @@ export default function VolunteerDialog({
       </DialogTitle>
       <Divider></Divider>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <Stack spacing={3}>
             <TextField
               id="name"
@@ -83,6 +83,7 @@ export default function VolunteerDialog({
               variant="outlined"
               defaultValue={volunteer.name}
               onInput={handleInputChange}
+              data-lpignore="true"
             />
             <TextField
               id="phone"

@@ -1,24 +1,14 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import VolunteerDialog from "./VolunteerDialog";
-import { Volunteer } from "./api";
 
 interface ActionBarProps {
-  isDialogOpen: boolean;
   openCreateDialog: () => void;
-  volunteers: Volunteer[];
-  setVolunteers: (volunteers: Volunteer[]) => void;
 }
 
-export default function ActionBar({
-  isDialogOpen,
-  openCreateDialog,
-  volunteers,
-  setVolunteers,
-}: ActionBarProps) {
+export default function ActionBar({ openCreateDialog }: ActionBarProps) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>

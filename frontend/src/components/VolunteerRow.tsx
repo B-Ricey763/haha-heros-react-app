@@ -1,7 +1,8 @@
-import { Avatar, IconButton, TableCell, TableRow } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { Volunteer, deleteVolunteer } from "./api";
+import { Avatar, Button, IconButton, TableCell, TableRow } from "@mui/material";
 import { useSnackbar } from "notistack";
+import { Link } from "react-router-dom";
+import { Volunteer, deleteVolunteer } from "../api";
 
 interface RowProps {
   volunteer: Volunteer;
@@ -9,6 +10,7 @@ interface RowProps {
   openUpdateDialog: () => void;
   volunteers: Volunteer[];
   setVolunteers: (volunteers: Volunteer[]) => void;
+  canEdit: boolean;
 }
 
 export default function VolunteerRow({
@@ -17,8 +19,9 @@ export default function VolunteerRow({
   openUpdateDialog,
   volunteers,
   setVolunteers,
+  canEdit,
 }: RowProps) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = async (id: string) => {
     const response = await deleteVolunteer(id);
@@ -35,6 +38,7 @@ export default function VolunteerRow({
     setCurrentVolunteer(vol);
     openUpdateDialog();
   };
+
   return (
     <TableRow
       key={volunteer.id}
@@ -54,22 +58,27 @@ export default function VolunteerRow({
       </TableCell>
       <TableCell align="left">{volunteer.hero_project}</TableCell>
       <TableCell align="right">
-        <IconButton
-          aria-label="delete"
-          color="error"
-          onClick={() => handleDelete(volunteer.id)}
-        >
-          <Delete />
-        </IconButton>
-      </TableCell>
-      <TableCell>
-        <IconButton
-          aria-label="edit"
-          color="primary"
-          onClick={() => handleOpenUpdateDialog(volunteer)}
-        >
-          <Edit />
-        </IconButton>
+        <Link to={`/${volunteer.id}/notes`} state={{ volunteer }}>
+          <Button>Notes</Button>
+        </Link>
+        {canEdit && (
+          <>
+            <IconButton
+              aria-label="delete"
+              color="error"
+              onClick={() => handleDelete(volunteer.id)}
+            >
+              <Delete />
+            </IconButton>
+            <IconButton
+              aria-label="edit"
+              color="primary"
+              onClick={() => handleOpenUpdateDialog(volunteer)}
+            >
+              <Edit />
+            </IconButton>
+          </>
+        )}
       </TableCell>
     </TableRow>
   );
