@@ -4,7 +4,7 @@ _Georgia Tech's Bits of Good Spring 2024 Developer assessment by Bryce_
 
 ## Quickstart
 
-To run, clone the repository and create a `.env` file in `/frontend` with a `REACT_APP_URL` parameter to tell the React app where the REST API is on the server. This is what it should look like:
+To run, clone the repository and create a `.env` file in `/frontend` with a `REACT_APP_API_URL` parameter to tell the React app where the REST API is on the server. This is what it should look like:
 
 ```
 REACT_APP_API_URL = "http://localhost:8080"
