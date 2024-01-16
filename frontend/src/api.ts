@@ -6,11 +6,19 @@ const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
 
+/**
+ * Default result of a request to the backend; the name conflicts with
+ * a default http response, but it works well enough for my purpose
+ */
 export interface Response {
   success: boolean;
   message: string;
 }
 
+/**
+ * This interface is necessary for volunteer creation as that route returns the
+ * created volunteer
+ */
 export interface VolunteerResponse {
   success: boolean;
   payload: Volunteer | undefined;

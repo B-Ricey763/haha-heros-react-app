@@ -21,6 +21,8 @@ import { volunteersLoader } from "./components/App";
 
 // Using Reacter Router dom allows for
 // multiple routes with data fetching included
+// I don't know if this is the best way to work with react router,
+// but it does the trick.
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
