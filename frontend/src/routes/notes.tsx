@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider, useTheme } from "@emotion/react";
 import {
   Box,
   Button,
@@ -12,6 +12,13 @@ import { useLocation, useNavigate } from "react-router";
 import { Volunteer } from "../api";
 import { darkTheme } from "../theme";
 
+/**
+ * A seperate route to view Volunteer notes and the number of times
+ * the page has been visited. It doesn't look that good since I wasn't able
+ * to get dark mode on the entire page, but it does the job well.
+ *
+ * @returns The NotesPage copmonent
+ */
 export default function NotesPage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,24 +44,22 @@ export default function NotesPage() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: "flex", flexWrap: "wrap", padding: "10%" }}>
-        <Container>
-          <Paper elevation={3}>
-            <Container
-              sx={{
-                padding: 1,
-              }}
-            >
-              <Typography variant="h3">{volunteer.name}'s Notes</Typography>
-              <Typography variant="body1">{volunteer.notes}</Typography>
-              <Divider></Divider>
-              <Typography variant="overline">
-                This page has been visited {numClicked} times
-              </Typography>
-              <Button onClick={() => navigate(-1)}>Back</Button>
-            </Container>
-          </Paper>
-        </Container>
+      <Box sx={{ width: "100%", height: "100%", bgcolor: "black" }}>
+        <Paper elevation={3} sx={{ width: "100%", height: "100%" }}>
+          <Container
+            sx={{
+              padding: 1,
+            }}
+          >
+            <Typography variant="h3">{volunteer.name}'s Notes</Typography>
+            <Typography variant="body1">{volunteer.notes}</Typography>
+            <Divider></Divider>
+            <Typography variant="overline">
+              This page has been visited {numClicked} times
+            </Typography>
+            <Button onClick={() => navigate(-1)}>Back</Button>
+          </Container>
+        </Paper>
       </Box>
     </ThemeProvider>
   );

@@ -36,6 +36,13 @@ function getComparator(order: Order): (a: Volunteer, b: Volunteer) => number {
     : (a, b) => a.hero_project.localeCompare(b.hero_project);
 }
 
+/**
+ * A table with all volunteer data as well as the dialogs and pagination that
+ * allow users to edit and cycle through volunteers
+ *
+ * @param {VolunteerTableProps} props the props
+ * @returns Volunteer Table component
+ */
 export default function VolunteerTable({
   isDialogOpen,
   openUpdateDialog,

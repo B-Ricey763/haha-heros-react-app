@@ -14,6 +14,12 @@ interface FilterDialogProps {
   currentFilter: string;
 }
 
+/**
+ * Dialog for filtering the table based on the hero project.
+ *
+ * @param props The props.
+ * @returns the Filter Dialog.
+ */
 export default function FilterDialog({
   open,
   onClose,

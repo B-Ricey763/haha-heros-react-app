@@ -1,7 +1,8 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { Volunteer, getVolunteers } from "../api";
 import { darkTheme } from "../theme";
 import ActionBar from "./ActionBar";
@@ -12,28 +13,30 @@ interface AppProps {
   canEdit: boolean;
 }
 
-export async function loader() {
+/**
+ * React router loader that just forwards a call to the api
+ *
+ * @returns List of volunteers
+ */
+export async function volunteersLoader() {
   const volunteers = await getVolunteers();
-  return { volunteers };
+  return volunteers;
 }
 
+/**
+ * The entire application.
+ *
+ * @param {string} canEdit whether or not the component has edit privelges
+ * @returns App component
+ */
 function App({ canEdit }: AppProps) {
-  // I couldn't get this to work, so I gave up
-  // const { loadedVolunteers }: any = useLoaderData();
+  const loadedVolunteers = useLoaderData() as Volunteer[];
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
+  const [volunteers, setVolunteers] = useState<Volunteer[]>(loadedVolunteers);
   const [isUpdate, setIsUpdate] = useState(false);
   const [currentVolunteer, setCurrentVolunteer] = useState<Volunteer>(
     {} as Volunteer
   );
-
-  useEffect(() => {
-    const getVols = async () => {
-      const { volunteers } = await loader();
-      setVolunteers(volunteers);
-    };
-    getVols();
-  }, []);
 
   const openCreateDialog = () => {
     setIsUpdate(false);
@@ -50,7 +53,7 @@ function App({ canEdit }: AppProps) {
       <ThemeProvider theme={darkTheme}>
         <>
           <CssBaseline />
-          <ActionBar openCreateDialog={openCreateDialog}></ActionBar>
+          <ActionBar openCreateDialog={openCreateDialog} canEdit={canEdit} />
           <VolunteerTable
             isDialogOpen={isDialogOpen}
             openUpdateDialog={openUpdateDialog}

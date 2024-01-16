@@ -13,6 +13,12 @@ interface RowProps {
   canEdit: boolean;
 }
 
+/**
+ * The row for a volunteer in the table, responsible for notes, editing, and deleting.
+ *
+ * @param prop The props.
+ * @returns The VolunteerRow component.
+ */
 export default function VolunteerRow({
   volunteer,
   setCurrentVolunteer,

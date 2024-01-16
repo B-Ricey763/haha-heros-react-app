@@ -6,9 +6,19 @@ import Typography from "@mui/material/Typography";
 
 interface ActionBarProps {
   openCreateDialog: () => void;
+  canEdit: boolean;
 }
 
-export default function ActionBar({ openCreateDialog }: ActionBarProps) {
+/**
+ * Top bar with the name and 'Add Volunteer' Button
+ *
+ * @param props Props
+ * @returns The ActionBar Component
+ */
+export default function ActionBar({
+  openCreateDialog,
+  canEdit,
+}: ActionBarProps) {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -17,13 +27,15 @@ export default function ActionBar({ openCreateDialog }: ActionBarProps) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               HaHa Heros
             </Typography>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => openCreateDialog()}
-            >
-              Add Volunteer
-            </Button>
+            {canEdit && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={() => openCreateDialog()}
+              >
+                Add Volunteer
+              </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

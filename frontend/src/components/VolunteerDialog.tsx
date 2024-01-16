@@ -25,6 +25,12 @@ interface EditProps {
   setVolunteers: (volunteers: Volunteer[]) => void;
 }
 
+/**
+ * The dialog for editing and creating a volunteer entry.
+ *
+ * @param props the props.
+ * @returns The volunteer dialog
+ */
 export default function VolunteerDialog({
   open,
   initialVolunteer,
@@ -45,15 +51,20 @@ export default function VolunteerDialog({
     event.preventDefault();
     const apiCall = isUpdate ? updateVolunteer : createVolunteer;
     const response = await apiCall(volunteer);
-    if (response.success) {
-      if (isUpdate) {
-        const newVolunteers = volunteers.map((v, i, vs) =>
-          v.id === volunteer.id ? volunteer : v
-        );
-        setVolunteers(newVolunteers);
-      }
+    // In order to keep database calls to a minimum,
+    // We only update the single entry in the volunteer array
+    // This does lead to issues for the create method, and so
+    // it has to have a custom VolunteerResponse with a payload attribute
+    if (response.success && isUpdate) {
+      const newVolunteers = volunteers.map((v) =>
+        v.id === volunteer.id ? volunteer : v
+      );
+      setVolunteers(newVolunteers);
+    } else if (response.success && response.payload) {
+      const newVolunteers = volunteers.slice();
+      newVolunteers.push(response.payload);
+      setVolunteers(newVolunteers);
     }
-
     onClose();
     enqueueSnackbar(response.message, {
       variant: response.success ? "success" : "error",

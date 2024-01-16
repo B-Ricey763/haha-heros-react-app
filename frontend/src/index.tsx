@@ -17,7 +17,10 @@ import Admin from "./routes/admin";
 import ErrorPage from "./routes/error-page";
 import NotesPage from "./routes/notes";
 import Viewer from "./routes/viewer";
+import { volunteersLoader } from "./components/App";
 
+// Using Reacter Router dom allows for
+// multiple routes with data fetching included
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -26,9 +29,23 @@ const router = createBrowserRouter(
         element={<Navigate to="/viewer" />}
         errorElement={<ErrorPage />}
       />
-      <Route path="/viewer" element={<Viewer />} errorElement={<ErrorPage />} />
-      <Route path="/admin" element={<Admin />} errorElement={<ErrorPage />} />
-      <Route path="/:id/notes" element={<NotesPage />}></Route>
+      <Route
+        path="/viewer"
+        element={<Viewer />}
+        errorElement={<ErrorPage />}
+        loader={volunteersLoader}
+      />
+      <Route
+        path="/admin"
+        element={<Admin />}
+        errorElement={<ErrorPage />}
+        loader={volunteersLoader}
+      />
+      <Route
+        path="/:id/notes"
+        element={<NotesPage />}
+        errorElement={<ErrorPage />}
+      ></Route>
     </>
   )
 );

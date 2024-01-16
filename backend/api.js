@@ -49,11 +49,13 @@ app.post('/api/bog/users/create/', (req, res) => {
   // just a js array, we are just kind of guessing the
   // next index. There may be holes, but I think this
   // solution is better than updating every id when you delete.
-  database.push({
+  const createdVolunteer = {
     ...volunteer,
+    notes: '',
     id: nextId
-  })
-  res.sendStatus(200)
+  }
+  database.push(createdVolunteer)
+  res.send(createdVolunteer).status(200)
 })
 
 // Start the server
