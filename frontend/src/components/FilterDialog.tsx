@@ -40,8 +40,14 @@ export default function FilterDialog({
     onClose(filterInput);
   };
 
+  const handleClose = () => {
+    // We have to do this minor redirect to avoid the event that
+    // is usually sent to the onClose function
+    onClose("");
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Filter by Hero Project</DialogTitle>
       <DialogContent>
         <TextField
