@@ -3,14 +3,18 @@
 _Georgia Tech's Bits of Good Spring 2024 Developer assessment by Bryce_
 
 ## Quickstart
-
-To run, clone the repository and create a `.env` file in `/frontend` with a `REACT_APP_API_URL` parameter to tell the React app where the REST API is on the server. This is what it should look like:
+Clone the repository. Then, install yarn if you haven't and run:
+```
+yarn install
+```
+Which will get you all of the dependencies. Create a `.env` file in `/frontend` with a `REACT_APP_API_URL` parameter to tell the React app where the REST API is on the server. This is what it should look like:
 
 ```
 REACT_APP_API_URL = "http://localhost:8080"
 ```
 
 The server is hardcoded to use port 8080, but you can change this in `/backend/api.js`.
+You should be able to run `yarn start` in the root repository and both the frontend and backend should be up!
 
 ## Issues
 
