@@ -1,6 +1,6 @@
 # HaHa Heros
 
-_Georgia Tech's Bits of Good Spring 2024 Developer assessment, to see requirements (click here)[https://github.com/GTBitsOfGood/spring24-dev-assessment]_
+_Georgia Tech's Bits of Good Spring 2024 Developer assessment, to see requirements [click here](https://github.com/GTBitsOfGood/spring24-dev-assessment)_
 
 This is a full stack react app with a very fleshed out frontend and a working backend. 
 
